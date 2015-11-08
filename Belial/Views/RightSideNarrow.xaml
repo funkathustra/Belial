@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="Belial.Views.RightSideNarrow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Belial.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Belial.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="400"
+    d:DesignWidth="48">
+    <UserControl.DataContext>
+        <vm:RightSideViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <!-- hug the top of the UI -->
+        </StackPanel>
+        
+        <!-- hug the bottom of the UI -->
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Button Command="{Binding Prev}">
+                <SymbolIcon Width="28" Height="28" Symbol="Previous" />
+            </Button>
+            <Button Command="{Binding PlayPause}">
+                <SymbolIcon Width="28" Height="28" Symbol="{Binding PlayIcon}" />
+            </Button>
+            <Button Command="{Binding Stop}">
+                <SymbolIcon Width="28" Height="28" Symbol="Stop" />
+            </Button>
+            <Button Command="{Binding Next}">
+                <SymbolIcon Width="28" Height="28" Symbol="Next" />
+            </Button>
+            <Slider Orientation="Vertical" Margin="5, 10,0,5" VerticalAlignment="Center" Height="100" Minimum="0" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" />
+            <SymbolIcon Margin="0, 0, 0, 10" Width="28" Height="28" Symbol="Volume" />
+        </StackPanel>
+    </Grid>
+</UserControl>
