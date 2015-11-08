@@ -1,4 +1,4 @@
-<Page x:Class="Belial.Views.Audio"
+<Page x:Class="Belial.Views.Artists"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Behaviors="using:Template10.Behaviors"
@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <controls:PageHeader BackButtonVisibility="Collapsed" Content="Audio" Frame="{x:Bind Frame, Mode=OneWay}">
+        <controls:PageHeader BackButtonVisibility="Collapsed" Content="Artists" Frame="{x:Bind Frame, Mode=OneWay}">
             <Interactivity:Interaction.Behaviors>
                 <Behaviors:EllipsisBehavior Visibility="Collapsed" />
             </Interactivity:Interaction.Behaviors>
@@ -39,10 +39,13 @@
 
         <!--  #region content  -->
 
-        <StackPanel Grid.Row="1" VerticalAlignment="Top"
-                    Orientation="Horizontal" Padding="12,8,0,0">
-        <ListView ItemsSource="{Binding Artists.Values}" DisplayMemberPath="Name"/>
-        </StackPanel>
+        <Grid Grid.Row="1" VerticalAlignment="Top" Padding="12,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ListView Grid.Column="0" Width="300" ItemsSource="{Binding Artists.Values}" DisplayMemberPath="Name"/>
+        </Grid>
 
         <!--  #endregion  -->
 

@@ -3,9 +3,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Belial.Views
 {
-    public sealed partial class Audio : Page
+    public sealed partial class Artists : Page
     {
-        public Audio()
+        public Artists()
         {
             InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Disabled;
