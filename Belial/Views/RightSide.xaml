@@ -1,13 +1,18 @@
 ﻿<UserControl
-    x:Class="Belial.Views.RightSide"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Belial.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Belial.ViewModels"
+    xmlns:Converters="using:Template10.Converters"
+    x:Class="Belial.Views.RightSide"
     mc:Ignorable="d"
     VerticalAlignment="Stretch">
+
+    <UserControl.Resources>
+        <Converters:StringFormatConverter x:Key="StringFormatConverter"/>
+    </UserControl.Resources>
 
     <UserControl.DataContext>
         <vm:RightSideViewModel />
@@ -17,12 +22,30 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <ListView x:Name="TrackList" ItemsSource="{Binding NowPlaying}" SelectionMode="Multiple" SelectionChanged="TrackList_SelectionChanged" AllowDrop="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" DragEnter="StackPanel_DragEnter" Drop="StackPanel_Drop" CanDrag="True" RightTapped="StackPanel_RightTapped">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout x:Name="TrackContextMenu">
+                                    <MenuFlyoutItem Text="Play" Command="{Binding DataContext.PlaySelected, ElementName=AlbumPage}" />
+                                    <MenuFlyoutItem Text="Add Next" Command="{Binding DataContext.AddSelectedNext, ElementName=AlbumPage}" />
+                                    <MenuFlyoutItem Text="Add To End" Command="{Binding DataContext.AddSelectedEnd, ElementName=AlbumPage}" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                            <TextBlock Text="{Binding Mode=OneWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
         <StackPanel Grid.Row="1">
             <TextBlock Margin="5, 5, 5, 0" HorizontalAlignment="Center" Text="{Binding CurrentTrack.Name}" FontSize="22" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
-            <TextBlock Margin="5, 5, 5, 0" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Text="{Binding CurrentTrack.Artist}" FontSize="18" />
-            <TextBlock Margin="5, 5, 5, 5" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Text="{Binding CurrentTrack.Album}" />
+            <TextBlock Margin="5, 5, 5, 0" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Text="{Binding CurrentTrack.Artist.Name}" FontSize="18" />
+            <TextBlock Margin="5, 5, 5, 5" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Text="{Binding CurrentTrack.Album.Name}" />
 
-            <Image Source="{Binding CurrentTrack.ImageSrc}" />
+            <Image Source="{Binding CurrentTrack.Album.ImageSource}" />
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding Prev}">
                     <SymbolIcon Width="40" Height="40" Symbol="Previous" />

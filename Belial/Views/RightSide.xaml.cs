@@ -23,5 +23,25 @@ namespace Belial.Views
         {
             this.InitializeComponent();
         }
+
+        private void StackPanel_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+
+        }
+
+        private void StackPanel_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void StackPanel_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void TrackList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

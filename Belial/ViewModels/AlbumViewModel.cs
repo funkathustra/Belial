@@ -12,14 +12,24 @@ using Windows.Globalization.DateTimeFormatting;
 using Windows.Globalization;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MyToolkit.Collections;
+using System.Collections.ObjectModel;
+using Belial.Services.SettingsServices;
 
 namespace Belial.ViewModels
 {
+    public enum AlbumSortMode
+    {
+        Alphabetical,
+        RecentlyImported,
+        Newest
+    }
+
     public class AlbumViewModel : Belial.Mvvm.ViewModelBase
     {
         public AlbumViewModel()
         {
-            FilteredTracks = new List<Track>();
+            FilteredTracks = new TrackListViewModel();
 
             Messenger.Default.Register<Messages.LibraryLoaded>(this, (message) =>
             {
@@ -28,11 +38,7 @@ namespace Belial.ViewModels
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                // designtime data
-                this.Value = "Designtime value";
-                this.SelectedAlbum = new Album() { AlbumArtist = new Artist() { Name = "Miles Davis" }, Name = "Kind of Blue", ImageSource = "https://upload.wikimedia.org/wikipedia/en/9/9c/MilesDavisKindofBlue.jpg", Year = 1969, DateImported = new DateTime(1987, 6, 19) };
 
-                return;
             }
         }
 
@@ -70,9 +76,46 @@ namespace Belial.ViewModels
         private string _Value = "Default";
         public string Value { get { return _Value; } set { Set(ref _Value, value); } }
 
-        public SortedDictionary<string, Album>.ValueCollection Albums { get { return LibraryService.Instance.Albums.Values; } }
+        public List<Album> Albums
+        {
+            get
+            {
+                switch(SortMode)
+                {
+                    default:
+                        return LibraryService.Instance.Albums.Values.ToList();
+                        break;
+                    case AlbumSortMode.Newest:
+                        return LibraryService.Instance.Albums.Values.OrderBy(x => x.Year).Reverse().ToList();
+                        break;
 
-        public List<Track> FilteredTracks { get; set; }
+                    case AlbumSortMode.RecentlyImported:
+                        return LibraryService.Instance.Albums.Values.OrderBy(x => x.DateImported).Reverse().ToList();
+                        break;
+                }
+                    
+
+            }
+        }
+
+        public TrackListViewModel FilteredTracks { get; set; }
+
+        public AlbumSortMode SortMode
+        {
+            get
+            {
+                return SettingsService.Instance.AlbumSortMode;
+            }
+            set
+            {
+                if (SettingsService.Instance.AlbumSortMode == value)
+                    return;
+                SettingsService.Instance.AlbumSortMode = value;
+                RaisePropertyChanged("SortMode");
+                RaisePropertyChanged("Albums");
+            }
+        }
+        
 
         DateTimeFormatter dateTimeFormatter = new DateTimeFormatter(YearFormat.Full,
             MonthFormat.Full,
@@ -97,6 +140,7 @@ namespace Belial.ViewModels
         }
 
         private Album selectedAlbum;
+
         public Album SelectedAlbum {
             get
             {
@@ -115,7 +159,7 @@ namespace Belial.ViewModels
                             orderby tracks.TrackNumber ascending
                             select tracks;
 
-                FilteredTracks = query.ToList();
+                FilteredTracks.Tracks = new ObservableCollection<Track>(query.ToList());
                 this.RaisePropertyChanged("SelectedAlbum");
                 this.RaisePropertyChanged("FilteredTracks");
                 this.RaisePropertyChanged("SelectedAlbumDateImported");
@@ -125,62 +169,65 @@ namespace Belial.ViewModels
             }
         }
 
-        private RelayCommand addAllNext;
+        //        <MenuFlyoutItem Text = "Play" Command="{Binding PlaySelected}" />
+        //<MenuFlyoutItem Text = "Add Next" Command="{Binding AddSelectedNext}" />
+        //<MenuFlyoutItem Text = "Add To End" Command="{Binding AddSelectedEnd}" />
+
+
+        private RelayCommand sortNewestFirstCommand;
 
         /// <summary>
-        /// Gets the AddAllNext.
+        /// Gets the SortNewestFirst.
         /// </summary>
-        public RelayCommand AddAllNext
+        public RelayCommand SortNewestFirstCommand
         {
             get
             {
-                return addAllNext
-                    ?? (addAllNext = new RelayCommand(
+                return sortNewestFirstCommand
+                    ?? (sortNewestFirstCommand = new RelayCommand(
                     () =>
                     {
-                        McwsService.Instance.AddNext(FilteredTracks);
-                    },
-                    () => FilteredTracks.Count > 0));
+                        SortMode = AlbumSortMode.Newest;
+                    }));
             }
         }
 
-        private RelayCommand addAllEnd;
+        private RelayCommand sortRecentlyImportedCommand;
 
         /// <summary>
-        /// Gets the AddAllEnd.
+        /// Gets the SortRecentlyImported.
         /// </summary>
-        public RelayCommand AddAllEnd
+        public RelayCommand SortRecentlyImportedCommand
         {
             get
             {
-                return addAllEnd
-                    ?? (addAllEnd = new RelayCommand(
+                return sortRecentlyImportedCommand
+                    ?? (sortRecentlyImportedCommand = new RelayCommand(
                     () =>
                     {
-                        McwsService.Instance.AddToEnd(FilteredTracks);
-                    },
-                    () => FilteredTracks.Count > 0));
+                        SortMode = AlbumSortMode.RecentlyImported;
+                    }));
             }
         }
 
-        private RelayCommand playAll;
+        private RelayCommand sortAlphabeticalCommand;
 
         /// <summary>
-        /// Gets the PlayAll.
+        /// Gets the SortAlphabeticalCommand.
         /// </summary>
-        public RelayCommand PlayAll
+        public RelayCommand SortAlphabeticalCommand
         {
             get
             {
-                return playAll
-                    ?? (playAll = new RelayCommand(
+                return sortAlphabeticalCommand
+                    ?? (sortAlphabeticalCommand = new RelayCommand(
                     () =>
                     {
-                        McwsService.Instance.Play(FilteredTracks);
-                    },
-                    () => FilteredTracks.Count > 0));
+                        SortMode = AlbumSortMode.Alphabetical;
+                    }));
             }
         }
+
     }
 }
 

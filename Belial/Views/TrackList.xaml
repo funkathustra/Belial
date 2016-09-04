@@ -1,0 +1,58 @@
+﻿<UserControl
+    x:Class="Belial.Views.TrackList"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Behaviors="using:Template10.Behaviors"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:toolkit="using:MyToolkit.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:Belial.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:Belial.ViewModels" mc:Ignorable="d"
+      xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:view="using:Belial.Views"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    Name="TrackListControl">
+    <StackPanel>
+        <ListView x:Name="TracksListView" ItemsSource="{Binding Tracks}" SelectionMode="Multiple" SelectionChanged="TracksListView_SelectionChanged" AllowDrop="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel x:Name="TrackStackPanel" Orientation="Horizontal" DragEnter="TrackStackPanel_DragEnter" Drop="TrackStackPanel_Drop" CanDrag="False" RightTapped="TrackStackPanel_RightTapped">
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="DoubleTapped">
+                                <core:InvokeCommandAction Command="{Binding DataContext.PlayAll, ElementName=AlbumPage}" />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        <FlyoutBase.AttachedFlyout>
+                            <MenuFlyout x:Name="TrackContextMenu">
+                                <!--<MenuFlyoutItem Text="Play" Command="{Binding Source={StaticResource src}}" />
+            <MenuFlyoutItem Text="Add Next" Command="{Binding Source={StaticResource src}}" />
+            <MenuFlyoutItem Text="Add To End" Command="{Binding Source={StaticResource src}}" />-->
+                                <MenuFlyoutItem Text="Play" Command="{Binding DataContext.PlaySelected, ElementName=TrackListControl}" />
+                                <MenuFlyoutItem Text="Add Next" Command="{Binding DataContext.AddSelectedNext, ElementName=TrackListControl}" />
+                                <MenuFlyoutItem Text="Add To End" Command="{Binding DataContext.AddSelectedEnd, ElementName=TrackListControl}" />
+                            </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
+                        <!--<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Tap">
+                                        <command:EventToCommand
+            Command="{Binding Main.NavigateToArticleCommand,
+              Mode=OneWay,
+              Source={StaticResource Locator}}"
+            CommandParameter="{Binding Mode=OneWay}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>-->
+
+                        <TextBlock Width="50" Text="{Binding TrackNumber}" />
+                        <TextBlock Width="300" Text="{Binding Name}" />
+                        <TextBlock Width="300" Text="{Binding Artist.Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackPanel>
+</UserControl>

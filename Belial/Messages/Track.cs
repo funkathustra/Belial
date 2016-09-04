@@ -15,5 +15,6 @@ namespace Belial.Messages
         public string Name { get; set; }
         public BitmapImage Image {get; set; }
         public string ImageSrc { get; set; }
+        public bool IsPlaying { get; set;  }
     }
 }

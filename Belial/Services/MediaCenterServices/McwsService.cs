@@ -19,6 +19,8 @@ using Windows.Storage.Streams;
 using Windows.Web.Http;
 using Windows.Foundation;
 using Windows.Web.Http.Filters;
+using System.Diagnostics;
+using Belial.Models.Library;
 
 namespace Belial.Services.MediaCenterServices
 {
@@ -57,8 +59,21 @@ namespace Belial.Services.MediaCenterServices
             CurrentStatus = new Status();
 
         }
-
-        public Track CurrentTrack { get; set; }
+        private Track currentTrack;
+        public Track CurrentTrack { get
+            {
+                return currentTrack;
+            } set
+            {
+                if (currentTrack != null && value.Key == currentTrack.Key)
+                    return;
+                if(currentTrack != null)
+                    currentTrack.IsPlaying = false;
+                currentTrack = value;
+                currentTrack.IsPlaying = true;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentTrack"));
+            }
+        }
         public Status CurrentStatus { get; set; }
 
         internal async void Reconnect()
@@ -78,9 +93,15 @@ namespace Belial.Services.MediaCenterServices
                 AccessKeyLookupResponse record = (AccessKeyLookupResponse)serializer.Deserialize(response.AsStreamForRead());
                 //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(UserName + ":" + Password)));
 
+                if (record.Port == null)
+                {
+                    return;
+                }
+
                 ServerPort = record.Port;
 
                 var IpList = record.LocalIpList.Split(',');
+                
                 foreach(var ip in IpList)
                 {
                     if(ip.CompareTo(record.Ip) != 0)
@@ -132,11 +153,22 @@ namespace Belial.Services.MediaCenterServices
 
                 Windows.Web.Http.Filters.HttpBaseProtocolFilter filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter();
                 filter.AllowUI = false;
-                filter.ServerCredential = new Windows.Security.Credentials.PasswordCredential(string.Format("http://{0}:{1}", ServerIp, ServerPort), UserName, Password);
+                if (UserName.Length > 0 && Password.Length > 0)
+                {
+                    filter.ServerCredential = new Windows.Security.Credentials.PasswordCredential(string.Format("http://{0}:{1}", ServerIp, ServerPort), UserName, Password);
+                }
+                    
 
                 client = new HttpClient(filter);
 
-                await Get("Playback/Info?Zone=-1");
+                try
+                {
+                    await Get("Playback/Info?Zone=-1");
+                } catch(Exception ex)
+                {
+                    return;
+                }
+                
 
                 Task t = Task.Run(async () =>
                {
@@ -154,43 +186,51 @@ namespace Belial.Services.MediaCenterServices
 
                             Messenger.Default.Send<Status>(CurrentStatus);
 
+                           int currentTrackKey = Int32.Parse(resp["FileKey"]);
 
                            // Check to see if we're on a new track
-                           if (resp["FileKey"] != CurrentTrack.FileKey)
+                           if (currentTrackKey != CurrentTrack.Key)
                            {
-                               CurrentTrack = new Track();
-                               CurrentTrack.FileKey = resp["FileKey"];
-                               if (resp.ContainsKey("Album"))
-                                   CurrentTrack.Album = resp["Album"];
-                               if (resp.ContainsKey("Artist"))
-                                   CurrentTrack.Artist = resp["Artist"];
-                               if (resp.ContainsKey("Name"))
-                                   CurrentTrack.Name = resp["Name"];
 
-                               string imageSrc = string.Format("http://{0}:{1}/{2}", ServerIp, ServerPort, resp["ImageURL"]);
-                               //var imageStream = await client.GetInputStreamAsync(new Uri(imageSrc));
+                               // is the current track in our library?
+                               if (LibraryService.Instance.Tracks.ContainsKey(currentTrackKey))
+                               {
+                                   CurrentTrack = LibraryService.Instance.Tracks[currentTrackKey];
+                               }
+                               else
+                               {
+                                   // No? Alright, create a new track and populate it with the info
+                                   var track = new Track();
+                                   track.Key = currentTrackKey;
+                                   if (resp.ContainsKey("Album"))
+                                   {
+                                       track.Album = LibraryService.Instance.FindOrCreateAlbum(resp["Album"]);
+                                   }
+                                       
+                                   if (resp.ContainsKey("Artist"))
+                                   {
+                                       track.Artist = LibraryService.Instance.FindOrCreateArtist(resp["Artist"]);
+                                   }
+                                       
+                                   if (resp.ContainsKey("Name"))
+                                   {
+                                       track.Name = resp["Name"];
+                                   }
 
-                               //IBuffer buffer;
-                               //var stream = imageStream.AsStreamForRead();
-                               //using (var reader = new DataReader(imageStream))
-                               //{
-                               //    await reader.LoadAsync((uint)stream.Length);
-                               //    buffer = reader.DetachBuffer();
-                               //}
+                                   track.ImageSrc = string.Format("http://{0}:{1}/{2}", ServerIp, ServerPort, resp["ImageURL"]);
 
-                               //var memoryStream = new InMemoryRandomAccessStream();
-                               //await memoryStream.WriteAsync(buffer);
-                               //await memoryStream.FlushAsync();
+                                   LibraryService.Instance.Tracks.Add(track.Key, track);
 
+                                   CurrentTrack = track;
+                               }
 
-                               BitmapImage image = new BitmapImage();
-                               //image.SetSource(memoryStream);
-
-                               CurrentTrack.Image = image;
-                               CurrentTrack.ImageSrc = imageSrc;
                                Messenger.Default.Send<Track>(CurrentTrack);
 
                            }
+
+                           // Load the Now Playing list
+                           var nowPlayingResponse = await GetStream("Playback/Playlist?Zone=-1&Fields=Key");
+                           LibraryService.Instance.ParseNowPlayingStream(nowPlayingResponse.AsStreamForRead());
 
 
                        });
@@ -200,8 +240,27 @@ namespace Belial.Services.MediaCenterServices
                });
 
                 // Load the library
-                var libraryStream = await GetStream("Files/Search?Action=mpl&ActiveFile=-1&Zone=-1&ZoneType=ID&Fields=Key,Name,Artist,Album,Album%20Artist,Track%20%23,Date%20Imported,Date");
-                LibraryService.Instance.ParseXML(libraryStream.AsStreamForRead());
+                //IAsyncOperationWithProgress<IInputStream, HttpProgress> libraryStream = client.GetInputStreamAsync(new Uri(string.Format("http://{0}:{1}/MCWS/v1/Files/Search?Action=mpl&ActiveFile=-1&Zone=-1&ZoneType=ID&Fields=Key,Name,Artist,Album,Album%20Artist,Track%20%23,Date%20Imported,Date", ServerIp, ServerPort)));
+                IAsyncOperationWithProgress<IInputStream, HttpProgress> libraryStream = GetStream("Files/Search?Action=mpl&ActiveFile=-1&Zone=-1&ZoneType=ID&Fields=Key,Name,Artist,Album,Album%20Artist,Track%20%23,Date%20Imported,Date");
+
+                libraryStream.Completed = (info, status) =>
+                {
+                    LibraryService.Instance.Clear();
+
+                    //var stream = await libraryStream;
+                    //info.GetResults()
+                    IInputStream stream = info.GetResults();
+                    LibraryService.Instance.ParseLibraryStream(stream.AsStreamForRead());
+                };
+
+                libraryStream.Progress = (res, progress) =>
+                {
+                    if(progress.TotalBytesToReceive > 0)
+                        Debug.WriteLine("Progress: " + 100.0 * (double)progress.BytesReceived / (double)progress.TotalBytesToReceive);
+                }; 
+
+
+
 
             }
         }

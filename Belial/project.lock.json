@@ -255,6 +255,25 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        }
+      },
       "Newtonsoft.Json/7.0.1": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
@@ -1908,6 +1927,25 @@
           "lib/windows81/GalaSoft.MvvmLight.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Extras.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
+        }
+      },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
         }
       },
       "Newtonsoft.Json/7.0.1": {
@@ -3596,6 +3634,25 @@
           "lib/windows81/GalaSoft.MvvmLight.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Extras.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
+        }
+      },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
         }
       },
       "Newtonsoft.Json/7.0.1": {
@@ -5291,6 +5348,25 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        }
+      },
       "Newtonsoft.Json/7.0.1": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
@@ -6977,6 +7053,25 @@
           "lib/windows81/GalaSoft.MvvmLight.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Extras.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
+        }
+      },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
         }
       },
       "Newtonsoft.Json/7.0.1": {
@@ -8672,6 +8767,25 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        }
+      },
       "Newtonsoft.Json/7.0.1": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
@@ -10358,6 +10472,25 @@
           "lib/windows81/GalaSoft.MvvmLight.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Extras.dll": {},
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
+        }
+      },
+      "MyToolkit/2.5.6": {
+        "compile": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll": {}
+        }
+      },
+      "MyToolkit.Extended/2.5.6": {
+        "dependencies": {
+          "MyToolkit": "[2.5.6, )"
+        },
+        "compile": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/MyToolkit.Extended.dll": {}
         }
       },
       "Newtonsoft.Json/7.0.1": {
@@ -12603,6 +12736,60 @@
         "lib/portable-net45+wp8+wpa81+netcore45+monoandroid1+xamarin.ios10/GalaSoft.MvvmLight.pdb",
         "lib/portable-net45+wp8+wpa81+netcore45+monoandroid1+xamarin.ios10/GalaSoft.MvvmLight.XML",
         "package/services/metadata/core-properties/2416d2969a834c638aba3851d652cc13.psmdcp",
+        "[Content_Types].xml"
+      ]
+    },
+    "MyToolkit/2.5.6": {
+      "sha512": "UGpEonLcykbPxMzPs0lz85R552QxOi+aQScSvggxaTCRURsdg8QZvVTtSg8mxZYwOxPRf8KD7LvoHM3i5J21hA==",
+      "type": "Package",
+      "files": [
+        "_rels/.rels",
+        "MyToolkit.nuspec",
+        "lib/portable-net45+wp8+win8+wpa81/MyToolkit.dll",
+        "lib/portable-net45+wp8+win8+wpa81/MyToolkit.xml",
+        "lib/portable-net45+wp8+win8+wpa81/CodeContracts/MyToolkit.Contracts.dll",
+        "lib/portable-sl5+wp71/MyToolkit.dll",
+        "lib/portable-sl5+wp71/MyToolkit.xml",
+        "package/services/metadata/core-properties/d11ad62bcf9b4263988a7c01cc8e34f3.psmdcp",
+        "[Content_Types].xml"
+      ]
+    },
+    "MyToolkit.Extended/2.5.6": {
+      "sha512": "aJ3SAhJRhU/SGuNoFH8hEcyNiCYUbbC6Q/hbHYob1aVSxHEzkWzIFKfFgRNT8DjuoaAzFiDODG2bxp8CUhQqoQ==",
+      "type": "Package",
+      "files": [
+        "_rels/.rels",
+        "MyToolkit.Extended.nuspec",
+        "lib/net40/MyToolkit.Extended.dll",
+        "lib/net40/MyToolkit.Extended.xml",
+        "lib/net45/MyToolkit.Extended.dll",
+        "lib/net45/MyToolkit.Extended.xml",
+        "lib/portable-wpa81+win8/MyToolkit.Extended/Controls/DatePicker.xbf",
+        "lib/portable-wpa81+win8/MyToolkit.Extended/Controls/TimePicker.xbf",
+        "lib/portable-wpa81+win8/MyToolkit.Extended/Themes/Generic.xbf",
+        "lib/portable-wpa81+win8/MyToolkit.Extended/UI/Popups/ListPickerBox.xbf",
+        "lib/portable-wpa81+win8/MyToolkit.Extended/MyToolkit.Extended.xr.xml",
+        "lib/portable-wpa81+win8/MyToolkit.Extended/MyToolkit.Extended.pdb",
+        "lib/portable-wpa81+win8/MyToolkit.Extended.dll",
+        "lib/portable-wpa81+win8/MyToolkit.Extended.pri",
+        "lib/portable-wpa81+win8/MyToolkit.Extended.xml",
+        "lib/uap10.0/MyToolkit.Extended/Themes/Generic.xbf",
+        "lib/uap10.0/MyToolkit.Extended/MyToolkit.Extended.xr.xml",
+        "lib/uap10.0/MyToolkit.Extended/MyToolkit.Extended.pdb",
+        "lib/uap10.0/MyToolkit.Extended.dll",
+        "lib/uap10.0/MyToolkit.Extended.pri",
+        "lib/uap10.0/MyToolkit.Extended.xml",
+        "lib/sl4-wp71/de/MyToolkit.Extended.resources.dll",
+        "lib/sl4-wp71/fr/MyToolkit.Extended.resources.dll",
+        "lib/sl4-wp71/MyToolkit.Extended.dll",
+        "lib/sl4-wp71/MyToolkit.Extended.xml",
+        "lib/sl50/MyToolkit.Extended.dll",
+        "lib/sl50/MyToolkit.Extended.xml",
+        "lib/wp80/de/MyToolkit.Extended.resources.dll",
+        "lib/wp80/fr/MyToolkit.Extended.resources.dll",
+        "lib/wp80/MyToolkit.Extended.dll",
+        "lib/wp80/MyToolkit.Extended.xml",
+        "package/services/metadata/core-properties/4b6874bd0d264e10a148cbbcbe000c66.psmdcp",
         "[Content_Types].xml"
       ]
     },
@@ -15352,6 +15539,7 @@
       "Microsoft.ApplicationInsights.WindowsApps >= 1.0.0",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",
       "MvvmLightLibs >= 5.2.0",
+      "MyToolkit.Extended >= 2.5.6",
       "Newtonsoft.Json >= 7.0.1",
       "Template10 >= 1.0.7"
     ],

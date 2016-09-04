@@ -13,5 +13,14 @@ namespace Belial.Models.Library
         public string Name { get; set; }
         public Artist Artist { get; set; }
         public Album Album { get; set; }
+        public string ImageSrc { get; set; }
+        public bool IsPlaying { get; set; }
+        public override string ToString()
+        {
+            string retVal = Name;
+            if (Artist != null)
+                retVal += " (" + Artist.Name + ")";
+            return retVal;
+        }
     }
 }

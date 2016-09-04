@@ -101,12 +101,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\LibraryLoaded.cs" />
+    <Compile Include="Messages\NowPlayingChanged.cs" />
     <Compile Include="Messages\Status.cs" />
-    <Compile Include="Messages\Track.cs" />
     <Compile Include="Models\Library\Album.cs" />
     <Compile Include="Models\Library\Artist.cs" />
     <Compile Include="Models\Library\Library.cs" />
-    <Compile Include="Models\Library\Response.cs" />
+    <Compile Include="Models\Library\MplResponse.cs" />
     <Compile Include="Models\Library\Track.cs" />
     <Compile Include="Models\Mcws\AccessKeyLookupResponse.cs" />
     <Compile Include="Models\Mcws\Response.cs" />
@@ -123,6 +123,7 @@
     <Compile Include="ViewModels\DetailPageViewModel.cs" />
     <Compile Include="ViewModels\RightSideViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
+    <Compile Include="ViewModels\TrackListViewModel.cs" />
     <Compile Include="Views\Albums.xaml.cs">
       <DependentUpon>Albums.xaml</DependentUpon>
     </Compile>
@@ -149,6 +150,9 @@
     </Compile>
     <Compile Include="Views\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TrackList.xaml.cs">
+      <DependentUpon>TrackList.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Splash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TrackList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

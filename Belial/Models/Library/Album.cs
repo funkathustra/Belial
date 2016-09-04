@@ -13,5 +13,9 @@ namespace Belial.Models.Library
         public string ImageSource { get; set;  }
         public int Year { get; set; }
         public DateTime DateImported { get; set; }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using Windows.UI.Xaml;
 using Belial.Services.MediaCenterServices;
+using Belial.ViewModels;
 
 namespace Belial.Services.SettingsServices
 {
@@ -20,7 +21,18 @@ namespace Belial.Services.SettingsServices
             _helper = new Template10.Services.SettingsService.SettingsHelper();
         }
 
-        // Server stuff that needs to persist
+        // View configurations
+        public AlbumSortMode AlbumSortMode
+        {
+            get { return _helper.Read<AlbumSortMode>(nameof(AlbumSortMode), AlbumSortMode.Alphabetical, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set
+            {
+                _helper.Write(nameof(AlbumSortMode), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
+            }
+        }
+
+
+        // Server stuff
         public string ServerAccessKey
         {
             get { return _helper.Read<string>(nameof(ServerAccessKey), "", Template10.Services.SettingsService.SettingsStrategies.Roam); }

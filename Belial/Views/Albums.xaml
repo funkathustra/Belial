@@ -5,14 +5,29 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
+      xmlns:toolkit="using:MyToolkit.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Belial.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:Belial.ViewModels" mc:Ignorable="d">
+      xmlns:vm="using:Belial.ViewModels" mc:Ignorable="d"
+      xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:view="using:Belial.Views"
+     >
     <Page.DataContext>
         <vm:AlbumViewModel />
     </Page.DataContext>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <!--<MenuFlyout x:Key="TrackContextMenu">
+            --><!--<MenuFlyoutItem Text="Play" Command="{Binding Source={StaticResource src}}" />
+            <MenuFlyoutItem Text="Add Next" Command="{Binding Source={StaticResource src}}" />
+            <MenuFlyoutItem Text="Add To End" Command="{Binding Source={StaticResource src}}" />--><!--
+            <MenuFlyoutItem Text="Play" Command="{Binding Path=DataContext.PlaySelected,ElementName=AlbumPage}" />
+            <MenuFlyoutItem Text="Add Next" Command="{Binding Path=DataContext.AddSelectedNext, ElementName=AlbumPage}" />
+            <MenuFlyoutItem Text="Add To End" Command="{Binding Path=DataContext.AddSelectedEnd, ElementName=AlbumPage}" />
+        </MenuFlyout>-->
+    </Page.Resources>
+    <Grid  x:Name="AlbumPage" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="VisualStateNarrow">
@@ -31,10 +46,15 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <controls:PageHeader BackButtonVisibility="Collapsed" Content="Albums" Frame="{x:Bind Frame, Mode=OneWay}">
-            <Interactivity:Interaction.Behaviors>
+        <controls:PageHeader Content="Albums" Frame="{x:Bind Frame, Mode=OneWay}">
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Label="Alphabetical" Command="{Binding SortAlphabeticalCommand}" />
+                <AppBarButton Label="Most Recently Imported" Command="{Binding SortRecentlyImportedCommand}" />
+                <AppBarButton Label="Newest Albums" Command="{Binding SortNewestFirstCommand}" />
+            </controls:PageHeader.SecondaryCommands>
+            <!--<Interactivity:Interaction.Behaviors>
                 <Behaviors:EllipsisBehavior Visibility="Collapsed" />
-            </Interactivity:Interaction.Behaviors>
+            </Interactivity:Interaction.Behaviors>-->
         </controls:PageHeader>
 
         <!--  #region content  -->
@@ -86,24 +106,13 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <AppBarButton Label="Play" Icon="Play" Command="{Binding PlayAll}" />
-                        <AppBarButton Label="Add Next" Icon="Add" Command="{Binding AddAllNext}"/>
-                        <AppBarButton Label="Add To End" Icon="Add" Command="{Binding AddAllEnd}" />
+                        <AppBarButton Label="Play" Icon="Play" Command="{Binding FilteredTracks.PlayAll, Mode=OneWay}" />
+                        <AppBarButton Label="Add Next" Icon="Add" Command="{Binding FilteredTracks.AddAllNext, Mode=OneWay}"/>
+                        <AppBarButton Label="Add To End" Icon="Add" Command="{Binding FilteredTracks.AddAllEnd, Mode=OneWay}" />
                     </StackPanel>
                 </Grid>
-               
-                
-                <ListView ItemsSource="{Binding FilteredTracks}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Width="50" Text="{Binding TrackNumber}" />
-                                <TextBlock Width="300" Text="{Binding Name}" />
-                                <TextBlock Width="300" Text="{Binding Artist.Name}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <view:TrackList DataContext="{Binding FilteredTracks}" />
+
             </StackPanel>
         </Grid>
 

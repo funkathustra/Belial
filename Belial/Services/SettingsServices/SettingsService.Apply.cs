@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Belial.ViewModels;
 using Windows.UI.Xaml;
 
 namespace Belial.Services.SettingsServices
